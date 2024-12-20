@@ -1,0 +1,45 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: action
+name: cbci build actions
+inputs:
+  url:
+    description: 'openshift cluster url'
+    required: true
+    default: ''
+  token:
+    description: 'token'
+    required: true
+    default: ''
+  project_name:
+    description: 'openshift project name'
+    required: true
+    default: ''
+  repository_name:
+    description: 'openshift repository name'
+    required: true
+    default: ''
+  repository_config_yaml_paths:
+    description: 'openshift repository config yaml paths'
+    required: true
+    default: ''
+    
+runs:
+  using: composite
+  steps:
+    # Checkout External Repository
+    - name: Checkout external Repository
+      uses: cloudbees-io/checkout@v1
+      with:
+        repository: ${{ inputs.repository_name }}
+        path: ''
+        clean: true
+        fetch-depth: 0
+    # Invoke OpenShift Actions
+    - id: invoke-openshift-actions
+      name: invoke-openshift-actions
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/openshift-actions:main-53e16b06ca2865148d556c6cc67bcf0d3b313a62  
+      shell: sh
+      run: |
+        set -x
+        cd /app
+        ./openshift_actions_app invoke -v '{"MetaInfo":{"OpenshiftClusterURL": "${{ inputs.url }}", "Token": "${{ inputs.token }}", "OpenshiftProjectName": "${{ inputs.project_name }}", "ClientSourceCodeRepo":"${{ inputs.repository_name }}", "ClientApplicationYAMLs":"${{ inputs.repository_config_yaml_paths }}" }}'

@@ -1,0 +1,66 @@
+= CloudBees action: Invoke OpenShift Deployment Action
+
+Use this action to trigger OpenShift APIs to build and deploy your application and fetch the stdout logs as output.
+
+== Inputs
+
+[cols="2a,1a,1a,3a",options="header"]
+.Input details
+|===
+
+| Input name
+| Data type
+| Required?
+| Description
+
+| `url`
+| String
+| Yes
+| The OpenShift Cluster URL to access the platform resources
+
+| `token`
+| String
+| Yes
+| The OpenShift API token generated with proper access (Read/Write).
+
+| `project_name`
+| String
+| Yes
+| The OpenShift Project name which is a unique identifier for the application environment where build and deployment occurs.
+
+| `repository_name`
+| String
+| Yes
+| The name of the repository where the source code resides.
+
+| `repository_config_yaml_paths`
+| String
+| Yes
+| The paths to the configuration files required to build and deploy the application, deployed in provided order.
+
+|===
+
+== Usage examples
+
+[source,yaml]
+----
+      - name: Trigger openshift actions
+        uses: cloudbees-io/openshift-invoke-deployment@v1
+        with:
+          url: ${{ inputs.url }}
+          token: ${{ secrets.OPENSHIFT_TOKEN }}
+          project_name: ${{ inputs.project_name }}
+          repository_name: ${{ inputs.repository_name }}
+          repository_config_yaml_paths: ${{ inputs.repository_config_yaml_paths }}
+----
+
+
+== License
+
+This code is made available under the 
+link:https://opensource.org/license/mit/[MIT license].
+
+== References
+
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].
