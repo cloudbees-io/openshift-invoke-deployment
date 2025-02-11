@@ -1,10 +1,13 @@
-= CloudBees action: Invoke OpenShift Deployment Action
+= CloudBees action: Deploy with OpenShift
 
-Use this action to trigger OpenShift APIs to build and deploy your application and fetch the stdout logs as output.
+Use this action to trigger Red Hat OpenShift, a hybrid cloud platform.
+OpenShift uses Linux containers and Kubernetes to manage applications.
+
+This action triggers OpenShift APIs to build and deploy your application, and fetch stdout logs as output.
 
 == Inputs
 
-[cols="2a,1a,1a,3a",options="header"]
+[cols="3a,1a,1a,4a",options="header"]
 .Input details
 |===
 
@@ -16,44 +19,47 @@ Use this action to trigger OpenShift APIs to build and deploy your application a
 | `url`
 | String
 | Yes
-| The OpenShift Cluster URL to access the platform resources
+| The OpenShift cluster URL.
 
 | `token`
 | String
 | Yes
-| The OpenShift API token generated with proper access (Read/Write).
+| The OpenShift API token.
+Must have read/write access.
 
 | `project_name`
 | String
 | Yes
-| The OpenShift Project name which is a unique identifier for the application environment where build and deployment occurs.
+| The OpenShift project name, a unique identifier for the application environment when building and deployment occurs.
 
 | `repository_name`
 | String
 | Yes
-| The name of the repository where the source code resides.
+| The source code repository name
 
 | `repository_config_yaml_paths`
 | String
 | Yes
-| The paths to the configuration files required to build and deploy the application, deployed in provided order.
+| The paths to the configuration files required to build and deploy the application, listed in deployment order.
 
 |===
 
-== Usage examples
+== Usage example
+
+In your YAML file, add:
 
 [source,yaml]
 ----
-      - name: Trigger openshift actions
-        uses: cloudbees-io/openshift-invoke-deployment@v1
+      steps:
+      - name: Build and deploy with OpenShift
+        uses: https://github.com/cloudbees-io/openshift-invoke-deployment@v1
         with:
-          url: ${{ inputs.url }}
+          url: ${{ vars.OPENSHIFT_URL }}
           token: ${{ secrets.OPENSHIFT_TOKEN }}
-          project_name: ${{ inputs.project_name }}
-          repository_name: ${{ inputs.repository_name }}
-          repository_config_yaml_paths: ${{ inputs.repository_config_yaml_paths }}
+          project_name: unique-openshift-project-name
+          repository_name: ${{ vars.REPO_NAME }}
+          repository_config_yaml_paths: my-dir/my-config
 ----
-
 
 == License
 
@@ -62,5 +68,5 @@ link:https://opensource.org/license/mit/[MIT license].
 
 == References
 
-* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
-* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/actions[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/[the CloudBees platform].
