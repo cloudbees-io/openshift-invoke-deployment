@@ -37,7 +37,7 @@ runs:
     # Invoke OpenShift Actions
     - id: invoke-openshift-actions
       name: invoke-openshift-actions
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/openshift-actions:main-53e16b06ca2865148d556c6cc67bcf0d3b313a62  
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/openshift-actions:main-5634f89007253a445f6ee3e5e62ad97df6e2875f  
       shell: sh
       run: |
         set -x
